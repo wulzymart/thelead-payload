@@ -18,7 +18,7 @@ export async function GET(
   const payload = await getPayload({ config: configPromise })
   const token = req.cookies.get(payloadToken)?.value
   const { searchParams } = new URL(req.url)
-  const path = searchParams.get('path')
+  let path = searchParams.get('path')
   const collection = searchParams.get('collection') as CollectionSlug
   const slug = searchParams.get('slug')
 
@@ -88,7 +88,7 @@ export async function GET(
     }
 
     draft.enable()
-
+    path = path.replace(/^\/posts(?:\/|$)/, '/news/')
     redirect(path)
   }
 }

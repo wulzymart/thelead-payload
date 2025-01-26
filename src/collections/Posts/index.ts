@@ -26,6 +26,9 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
+import { checkHeadline } from '@/collections/Posts/hooks/checkHeadline'
+import { InlineMediaBlock } from '@/blocks/Inline-media/config'
+import { VideoEmbedBlock } from '@/blocks/VideoEmbedBlock/config'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -41,7 +44,8 @@ export const Posts: CollectionConfig<'posts'> = {
   defaultPopulate: {
     title: true,
     slug: true,
-    categories: true,
+    category: true,
+    subcategories: true,
     meta: {
       image: true,
       description: true,
@@ -51,13 +55,11 @@ export const Posts: CollectionConfig<'posts'> = {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {
-        const path = generatePreviewPath({
+        return generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'posts',
           req,
         })
-
-        return path
       },
     },
     preview: (data, { req }) =>
@@ -75,12 +77,60 @@ export const Posts: CollectionConfig<'posts'> = {
       required: true,
     },
     {
+      name: 'category',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+      },
+      hasMany: false,
+      relationTo: 'categories',
+      required: true
+    },
+    {
+      name: 'subcategories',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+        condition: (data) => !!data.category
+      },
+      hasMany: true,
+      relationTo: 'subcategories',
+      filterOptions: ({ data }) => {
+        return {
+          category: {
+            equals: data.category,
+          },
+        }
+      }
+    },
+    {
+      type: 'row',
+      admin: { position: 'sidebar' },
+      fields: [
+        { name: 'isBreaking', type: 'checkbox', defaultValue: false },
+        { name: 'isExclusive', type: 'checkbox', defaultValue: false },
+        { name: 'isHeadline', type: 'checkbox', defaultValue: false },
+        {
+          name: 'isMajorHeadline',
+          admin: {
+            condition: (data) => {
+              if (data.isHeadline) return true
+              data.isMajorHeadline = false
+              return false
+            },
+          },
+          type: 'checkbox',
+          defaultValue: false,
+        },
+      ],
+    },
+    {
       type: 'tabs',
       tabs: [
         {
           fields: [
             {
-              name: 'heroImage',
+              name: 'featuredImage',
               type: 'upload',
               relationTo: 'media',
             },
@@ -92,7 +142,9 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock,
+                        InlineMediaBlock, VideoEmbedBlock
+                      ] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -102,6 +154,10 @@ export const Posts: CollectionConfig<'posts'> = {
               label: false,
               required: true,
             },
+            {
+              name: 'excerpt',
+              type: 'textarea',
+            }
           ],
           label: 'Content',
         },
@@ -123,15 +179,6 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'posts',
             },
-            {
-              name: 'categories',
-              type: 'relationship',
-              admin: {
-                position: 'sidebar',
-              },
-              hasMany: true,
-              relationTo: 'categories',
-            },
           ],
           label: 'Meta',
         },
@@ -141,7 +188,7 @@ export const Posts: CollectionConfig<'posts'> = {
           fields: [
             OverviewField({
               titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
+              descriptionPath: 'metSerializedEditorStatea.description',
               imagePath: 'meta.image',
             }),
             MetaTitleField({
@@ -185,13 +232,14 @@ export const Posts: CollectionConfig<'posts'> = {
       },
     },
     {
-      name: 'authors',
+      name: 'author',
       type: 'relationship',
       admin: {
         position: 'sidebar',
       },
       hasMany: true,
       relationTo: 'users',
+      defaultValue: ({user}) =>([user!.id]),
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
@@ -223,6 +271,7 @@ export const Posts: CollectionConfig<'posts'> = {
     afterChange: [revalidatePost],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
+    beforeValidate:[checkHeadline]
   },
   versions: {
     drafts: {

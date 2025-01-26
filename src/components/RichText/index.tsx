@@ -4,7 +4,7 @@ import {
   SerializedBlockNode,
   SerializedLinkNode,
 } from '@payloadcms/richtext-lexical'
-import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import { SerializedEditorState, SerializedTextNode } from '@payloadcms/richtext-lexical/lexical'
 import {
   JSXConvertersFunction,
   LinkJSXConverter,
@@ -21,10 +21,30 @@ import type {
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
+import { createElement, JSX } from 'react'
+import { TEXT_TYPE_TO_FORMAT } from '@/utilities/richtext-serializer'
 
 type NodeTypes =
   | DefaultNodeTypes
   | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+const  camelize = (s: string) => s.replace(/-./g, x=>x[1]!.toUpperCase())
+const stylesConverter = (styles: string) => {
+  const stylesArray =styles.split(';').filter(style => !!style).map(style => style.split(':'))
+  return stylesArray.reduce((acc, [key, value]) => {
+    // @ts-ignore
+    acc[camelize(key)] = value
+    return acc
+  }, {})
+}
+type TextElementType = 'span' | 'em' | 'strong' | 'code' | 'sub' | 'sup'
+const  textNodeFormatter : (arg:{ node: SerializedTextNode}) => JSX.Element =  ({ node: { text, style: nodeStyle, format,  ...node } }) =>  {
+  const defaultStyle = {
+    textDecoration: format === TEXT_TYPE_TO_FORMAT.strikethrough ? 'line-through' :  format === TEXT_TYPE_TO_FORMAT.underline ? 'underline' : undefined
+  }
+  const style = nodeStyle ?  stylesConverter(nodeStyle) : {}
+  const element: TextElementType = format === TEXT_TYPE_TO_FORMAT.bold ? 'strong' : format === TEXT_TYPE_TO_FORMAT.italic? 'em' : format === TEXT_TYPE_TO_FORMAT.code ? 'code' : format === TEXT_TYPE_TO_FORMAT.subscript ? 'sub' : format === TEXT_TYPE_TO_FORMAT.superscript ? 'sup' : 'span'
+  return  createElement(element, { style: { ...defaultStyle, ...style } }, text)
+}
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -38,6 +58,7 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
+  text: textNodeFormatter,
   blocks: {
     banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
     mediaBlock: ({ node }) => (

@@ -2,11 +2,10 @@ import { cn } from '@/utilities/ui'
 import React from 'react'
 
 import type { Post } from '@/payload-types'
-
-import { Card, CardPostData } from '@/components/Card'
+import NewsThumbnailTitleExcerptCard from '@/components/cards/thumdnail-title-card'
 
 export type Props = {
-  posts: CardPostData[]
+  posts: Post[]
 }
 
 export const CollectionArchive: React.FC<Props> = (props) => {
@@ -20,7 +19,7 @@ export const CollectionArchive: React.FC<Props> = (props) => {
             if (typeof result === 'object' && result !== null) {
               return (
                 <div className="col-span-4" key={index}>
-                  <Card className="h-full" doc={result} relationTo="posts" showCategories />
+                  <NewsThumbnailTitleExcerptCard news={result} key={index} />
                 </div>
               )
             }

@@ -54,8 +54,8 @@ export default {
       },
       colors: {
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: "#EC3535",
+          foreground: '#0f172a'
         },
         background: 'hsl(var(--background))',
         border: 'hsla(var(--border))',

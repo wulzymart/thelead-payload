@@ -7,6 +7,10 @@ import {
   lexicalEditor,
   UnderlineFeature,
 } from '@payloadcms/richtext-lexical'
+import { ClearFormatFeature } from '@/lexical-features/clear-format/server'
+import { FontSize } from '@/lexical-features/font-size/server'
+import { FontWeight } from '@/lexical-features/font-weight/server'
+import { ColorFeature } from '@/lexical-features/colour/server'
 
 export const defaultLexical: Config['editor'] = lexicalEditor({
   features: () => {
@@ -16,11 +20,10 @@ export const defaultLexical: Config['editor'] = lexicalEditor({
       BoldFeature(),
       ItalicFeature(),
       LinkFeature({
-        enabledCollections: ['pages', 'posts'],
+        enabledCollections: ['categories', 'posts'],
         fields: ({ defaultFields }) => {
           const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
-            if ('name' in field && field.name === 'url') return false
-            return true
+            return !('name' in field && field.name === 'url');
           })
 
           return [
@@ -37,6 +40,10 @@ export const defaultLexical: Config['editor'] = lexicalEditor({
           ]
         },
       }),
+      FontSize(),
+      FontWeight(),
+      ColorFeature(),
+      ClearFormatFeature()
     ]
   },
 })
