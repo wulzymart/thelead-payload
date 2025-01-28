@@ -76,7 +76,7 @@ export const ColorPickerView = ({ fontColor, onFontColorChange, onApplyStyles }:
       ...prev,
       [name]: {
         ...prev[name as InputsColorsKeys],
-        [subName]: name === 'hex' ? value : parseInt(value),
+        [subName!]: name === 'hex' ? value : parseInt(value),
       },
     }))
   }

@@ -9,12 +9,12 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Banner } from '../../blocks/Banner/config'
-import { Code } from '../../blocks/Code/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { authenticated } from '@/access/authenticated'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { Banner } from '@/blocks/Banner/config'
+import { Code } from '@/blocks/Code/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
@@ -29,14 +29,17 @@ import { slugField } from '@/fields/slug'
 import { checkHeadline } from '@/collections/Posts/hooks/checkHeadline'
 import { InlineMediaBlock } from '@/blocks/Inline-media/config'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbedBlock/config'
+import { isAdmin } from '@/access/isAdmin'
+import { isSuperAdmin } from '@/access/isSuperAdmin'
+import { isEditor } from '@/access/isEditor'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   access: {
     create: authenticated,
-    delete: authenticated,
+    delete: (args) => isAdmin(args) || isSuperAdmin(args),
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: (args) => isAdmin(args) || isSuperAdmin(args) || isEditor(args),
   },
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property

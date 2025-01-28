@@ -55,7 +55,7 @@ export default function BackgroundImageTitleExcerpt({
               )}
               {title}
             </h2>
-            <p>{excerpt ? makeExcerpt(excerpt) : getExcerpt(content)}</p>
+            <p className='max-sm:hidden'>{excerpt ? makeExcerpt(excerpt) : getExcerpt(content)}</p>
           </div>
         </Link>
       </div>

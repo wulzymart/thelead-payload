@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Media, Post } from '@/payload-types'
-import { getExcerpt, makeExcerpt } from '@/utilities/getExcerpt'
+// import { getExcerpt, makeExcerpt } from '@/utilities/getExcerpt'
 
 export default function PostCardBig({
-  news: { slug, featuredImage:imgSrc, title, excerpt, content },
+  news: { slug, featuredImage:imgSrc, title,
+    // excerpt, content
+  },
 }: {
   news: Post
 }) {
@@ -34,9 +36,9 @@ export default function PostCardBig({
           <h5 className="mb-2 text-lg font-semibold tracking-tight text-accent dark:text-white">
             {title}
           </h5>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            {excerpt ? makeExcerpt(excerpt) : getExcerpt(content)}
-          </p>
+          {/*<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">*/}
+          {/*  {excerpt ? makeExcerpt(excerpt, 50) : getExcerpt(content, 50)}*/}
+          {/*</p>*/}
         </div>
       </Link>
     </div>

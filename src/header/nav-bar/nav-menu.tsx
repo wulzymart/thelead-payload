@@ -24,7 +24,8 @@ export async function NavMenu() {
         title: true,
         slug: true,
         subcategories: true
-      }
+      },
+      sort: 'createdAt'
     }
   );
   const categories: Partial<Category>[] = docs

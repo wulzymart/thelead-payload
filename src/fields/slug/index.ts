@@ -24,6 +24,8 @@ export const slugField: Slug = (fieldToUse = 'title', overrides = {}) => {
   }
 
   // Expect ts error here because of typescript mismatching Partial<TextField> with TextField
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const slugField: TextField = {
     name: 'slug',

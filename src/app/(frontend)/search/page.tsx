@@ -6,8 +6,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import { Post } from '@/payload-types'
 import { Search } from '@/search/Component'
-import PageClient from './page.client'
-import { CardPostData } from '@/components/Card'
+import PageClient from '@/app/(frontend)/search/page.client'
 
 type Args = {
   searchParams: Promise<{
@@ -74,7 +73,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       </div>
 
       {posts.totalDocs > 0 ? (
-        <CollectionArchive posts={posts.docs as CardPostData[]} />
+        <CollectionArchive posts={posts.docs as Post[]} />
       ) : (
         <div className="container">No results found.</div>
       )}

@@ -333,6 +333,10 @@ export interface Redirect {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'subcategories';
+          value: string | Subcategory;
         } | null);
     url?: string | null;
   };

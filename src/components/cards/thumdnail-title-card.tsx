@@ -16,7 +16,7 @@ export default function NewsThumbnailTitleExcerptCard({
         <div className="flex flex-col xl:flex-row w-full bg-white shadow-lg rounded-lg overflow-hidden min-h-full">
           <div className="max-lg:w-full md:h-[300px] xl:min-h-[300px] xl:w-1/3 bg-accent-foreground relative">
             <Image
-              src={(imgSrc as Media).thumbnailURL!}
+              src={(imgSrc as Media).thumbnailURL || "/dark-bg.jpg"}
               alt={(imgSrc as unknown as Media).alt || title}
               className="rounded-xl"
               fill

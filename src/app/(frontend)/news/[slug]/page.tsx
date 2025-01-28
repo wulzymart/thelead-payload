@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
@@ -7,19 +6,13 @@ import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import RichText from '@/components/RichText'
-
-import type { Media, Post } from '@/payload-types'
-//
-// import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { LatestNews } from '@/heading/latest-news'
 import Subscribe from '@/components/cards/subscribe'
 import ShellAdvert from '@/components/cards/shell-advert'
-import Image from 'next/image'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import { getExcerpt } from '@/utilities/getExcerpt'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -34,11 +27,9 @@ export async function generateStaticParams() {
     },
   })
 
-  const params = posts.docs.map(({ slug }) => {
+  return posts.docs.map(({ slug }) => {
     return { slug }
   })
-
-  return params
 }
 
 type Args = {
@@ -54,16 +45,11 @@ export default async function Post({ params: paramsPromise }: Args) {
   const news = await queryPostBySlug({ slug })
 
   if (!news) return <PayloadRedirects url={url} />
-  getExcerpt(news.content)
   return (
     <div className="w-[90%] mx-auto mt-8 grid grid-col-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
       <main className="md:col-span-2 lg:col-span-3">
         <article>
           <PageClient />
-
-          {/* Allows redirects for valid pages too */}
-          <PayloadRedirects disableNotFound url={url} />
-
           {draft && <LivePreviewListener />}
           <h1 className="text-xl md:text-2xl font-serif font-bold md:font-extrabold">
             {news.title}
@@ -78,7 +64,7 @@ export default async function Post({ params: paramsPromise }: Args) {
                 position: 'relative',
               }}
             >
-              <MediaBlock media={news.featuredImage} blockType='mediaBlock'/>
+              <MediaBlock media={news.featuredImage} blockType="mediaBlock" />
             </div>
           ) : (
             ''
@@ -107,7 +93,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { slug = '' } = await paramsPromise
   const post = await queryPostBySlug({ slug })
 
-  return generateMeta({ doc: post })
+  return generateMeta({ doc: post, url: '/news/' + slug })
 }
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {

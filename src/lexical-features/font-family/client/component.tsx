@@ -1,5 +1,5 @@
 'use client'
-import { $getSelection, ElementFormatType, LexicalEditor } from '@payloadcms/richtext-lexical/lexical'
+import { $getSelection } from '@payloadcms/richtext-lexical/lexical'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { $patchStyleText } from '@payloadcms/richtext-lexical/lexical/selection'
 import { JSX, useCallback } from 'react'

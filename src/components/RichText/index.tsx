@@ -15,29 +15,29 @@ import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 
 import type {
   BannerBlock as BannerBlockProps,
-  CallToActionBlock as CTABlockProps,
-  MediaBlock as MediaBlockProps,
+  MediaBlock as MediaBlockProps, VideoEmbedBlock as VideoEmbedBlockType,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
-import { createElement, JSX } from 'react'
+import React, { createElement, JSX } from 'react'
 import { TEXT_TYPE_TO_FORMAT } from '@/utilities/richtext-serializer'
+import { InlineMediaBlock } from '@/blocks/Inline-media/Component'
+import type {InlineMediaBlock as InlineMediaBlockProps} from '@/payload-types'
+import { VideoEmbedBlock } from '@/blocks/VideoEmbedBlock/Component'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+  | SerializedBlockNode< MediaBlockProps | BannerBlockProps | CodeBlockProps>
 const  camelize = (s: string) => s.replace(/-./g, x=>x[1]!.toUpperCase())
 const stylesConverter = (styles: string) => {
   const stylesArray =styles.split(';').filter(style => !!style).map(style => style.split(':'))
-  return stylesArray.reduce((acc, [key, value]) => {
-    // @ts-ignore
-    acc[camelize(key)] = value
+  return stylesArray.reduce((acc: { [key: string]: string }, [key, value]) => {
+    acc[camelize(key!)] = value!
     return acc
   }, {})
 }
 type TextElementType = 'span' | 'em' | 'strong' | 'code' | 'sub' | 'sup'
-const  textNodeFormatter : (arg:{ node: SerializedTextNode}) => JSX.Element =  ({ node: { text, style: nodeStyle, format,  ...node } }) =>  {
+const  textNodeFormatter : (arg:{ node: SerializedTextNode}) => JSX.Element =  ({ node: { text, style: nodeStyle, format} }) =>  {
   const defaultStyle = {
     textDecoration: format === TEXT_TYPE_TO_FORMAT.strikethrough ? 'line-through' :  format === TEXT_TYPE_TO_FORMAT.underline ? 'underline' : undefined
   }
@@ -71,8 +71,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
         disableInnerContainer={true}
       />
     ),
+    inlineMediaBlock: ({ node }: { node: SerializedBlockNode<InlineMediaBlockProps> }) => (
+      <InlineMediaBlock {...node.fields}/>
+    ),
+    videoEmbedBlock: ({ node }: { node: SerializedBlockNode<VideoEmbedBlockType> }) => <VideoEmbedBlock {...node.fields}/>,
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
-    cta: ({ node }) => <CallToActionBlock {...node.fields} />,
   },
 })
 

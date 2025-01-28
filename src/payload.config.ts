@@ -20,13 +20,23 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    meta: {
+      title: 'Admin area | The Lead Nigeria',
+      description: 'Admin area for The Lead Nigeria',
+      icons:[
+        {
+          rel: 'icon',
+          type: 'image/png',
+          url: '/logo-small.png',
+        },
+      ]
+
+    },
     components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
-      beforeLogin: ['@/components/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: ['@/components/BeforeDashboard'],
+      graphics:{
+        Logo: '@/components/logo#Logo',
+        Icon: '@/components/logo#Icon'
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),

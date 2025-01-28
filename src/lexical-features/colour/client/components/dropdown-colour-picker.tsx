@@ -12,7 +12,7 @@ import { $patchStyleText } from '@payloadcms/richtext-lexical/lexical/selection'
 import { $getSelection, $isRangeSelection } from '@payloadcms/richtext-lexical/lexical'
 import { useLexicalComposerContext } from '@payloadcms/richtext-lexical/lexical/react/LexicalComposerContext'
 import { ColorPicker } from '@/lexical-features/colour/client/components/colour-picker'
-import { BgColorIcon, FontColorIcon } from '@/lexical-features/colour/client/icons/colour-icon'
+import {  FontColorIcon } from '@/lexical-features/colour/client/icons/colour-icon'
 import { translateColor } from '@/lexical-features/colour/utils/translateColor'
 import { PaintBucketIcon } from 'lucide-react'
 
@@ -25,8 +25,6 @@ export const DropdownColorPicker = ({colorType}: {colorType: ColorType}) => {
   const [editor] = useLexicalComposerContext()
 
   const [CSSVariable, setCSSVariable] = useState<string | null>(null)
-  const selectionColor = "#B2FFD6"
-
 
   function getNodeStyles(node: HTMLElement) {
     const computedStyle = getComputedStyle(node)

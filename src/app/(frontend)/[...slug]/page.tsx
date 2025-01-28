@@ -1,15 +1,10 @@
 import type { Metadata } from 'next'
-
-import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload, Where } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import { homeStatic } from '@/endpoints/seed/home-static'
 
 import type { Category, Subcategory } from '@/payload-types'
-
-import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -27,22 +22,17 @@ import {
 import Subscribe from '@/components/cards/subscribe'
 import ShellAdvert from '@/components/cards/shell-advert'
 
-// export async function generateStaticParams() {
-//   const payload = await getPayload({ config: configPromise })
-//
-//
-// }
-
 type Args = {
   params: Promise<{
     slug: string[]
   }>
-  searchParams: { page?: string }
+  searchParams: Promise<{ page?: string }>
 }
 
-export default async function Page({ params: paramsPromise , searchParams: { page: currentPage }}: Args, ) {
+export default async function Page({ params: paramsPromise , searchParams: searchPromise}: Args, ) {
   const { isEnabled: draft } = await draftMode()
   const { slug } = await paramsPromise
+  const {page: currentPage} = await searchPromise
 
   if (slug.length > 2) {
     throw notFound()
@@ -50,53 +40,12 @@ export default async function Page({ params: paramsPromise , searchParams: { pag
   const [categorySlug, subcategorySlug] = slug
   const payload = await getPayload({ config: configPromise })
 
-  const select: any = {
-    title: true,
-    slug: true,
-    subcategories: {
-      title: true,
-      slug: true,
-    },
-  }
+  const category: Category | null = await queryCategoryBySlug({ slug: categorySlug! })
+  if (!category) throw notFound()
 
-  const {
-    totalDocs,
-    docs: [category],
-  } = await payload.find({
-    collection: 'categories',
-    overrideAccess: false,
-    where: {
-      slug: {
-        equals: categorySlug,
-      },
-    },
-    select,
-  })
-  if (!totalDocs) throw notFound()
+  const subcategory: Subcategory | null = subcategorySlug? await querySubCategoryBySlug({ slug: subcategorySlug! }) : null
 
-  const subcategorySearch = subcategorySlug
-    ? await payload.find({
-        collection: 'subcategories',
-        where: {
-          slug: {
-            equals: subcategorySlug,
-          },
-          'category.slug': {
-            equals: categorySlug,
-          },
-        },
-        overrideAccess: false,
-        select: {
-          title: true,
-          slug: true,
-        },
-      })
-    : undefined
-
-  if (subcategorySlug && subcategorySearch) {
-    if (!subcategorySearch.totalDocs) throw notFound()
-  }
-  const subcategory = subcategorySlug && subcategorySearch ? subcategorySearch.docs[0] : undefined
+  if (subcategorySlug && !subcategory) throw notFound()
 
   const postWhere: Where = {
     _status: {
@@ -117,11 +66,7 @@ export default async function Page({ params: paramsPromise , searchParams: { pag
   }`;
   const {
     docs: posts,
-    totalDocs: totalPosts,
     totalPages,
-    nextPage,
-    prevPage,
-    hasNextPage,
     page
   } = await payload.find({
     collection: 'posts',
@@ -235,12 +180,55 @@ export default async function Page({ params: paramsPromise , searchParams: { pag
 }
 
 
-// export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-//   const { slug = 'home' } = await paramsPromise
-//   const page = await queryPageBySlug({
-//     slug,
-//   })
-//
-//   return generateMeta({ doc: page })
-// }
-//
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug } = await paramsPromise
+  if (slug.length > 2) {
+    throw notFound()
+  }
+  const [categorySlug, subcategorySlug] = slug
+
+  const category: Category | null = await queryCategoryBySlug({ slug: categorySlug! })
+  if (!category) throw notFound()
+
+  const subcategory: Subcategory | null = subcategorySlug? await querySubCategoryBySlug({ slug: subcategorySlug! }) : null
+
+  if (subcategorySlug && !subcategory) throw notFound()
+const url = `/${categorySlug}${subcategorySlug ? `/${subcategorySlug}` : ""}`
+  return generateMeta({ doc: subcategory || category, url })
+}
+
+const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
+  const payload = await getPayload({ config: configPromise })
+  const {docs, totalDocs} = await payload.find({
+    collection: 'categories',
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    select: {
+      title: true,
+      slug: true,
+      subcategories: true,
+      meta: true
+    },
+  })
+  return totalDocs ? docs[0] as Category: null
+})
+const querySubCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
+  const payload = await getPayload({ config: configPromise })
+  const {docs, totalDocs} =  await payload.find({
+    collection: 'subcategories',
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    select: {
+      title: true,
+      slug: true,
+      meta: true
+    },
+  })
+  return totalDocs ? docs[0] as Subcategory: null
+})

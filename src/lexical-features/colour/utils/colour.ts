@@ -1,4 +1,4 @@
-export default {
+const theme =  {
   background: '--background',
   foreground: '--foreground',
 
@@ -33,3 +33,5 @@ export default {
   warning: '--warning',
   error: '--error',
 }
+
+export default theme

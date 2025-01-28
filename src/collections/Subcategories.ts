@@ -1,7 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { anyone } from '@/access/anyone'
 import { slugField } from '@/fields/slug'
 import {
   MetaDescriptionField,
@@ -10,17 +9,24 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { isSuperAdmin } from '@/access/isSuperAdmin'
+import { isAdmin } from '@/access/isAdmin'
+import { revalidateSubCategory } from '@/hooks/revalidate'
 
 export const Subcategories: CollectionConfig = {
   slug: 'subcategories',
   access: {
-    create: authenticated,
-    delete: authenticated,
+    admin: (args) => isSuperAdmin(args) || isAdmin(args),
+    create: (args) => isSuperAdmin(args) || isAdmin(args),
+    delete: (args) => isSuperAdmin(args) || isAdmin(args),
     read: anyone,
-    update: authenticated,
+    update: (args) => isSuperAdmin(args) || isAdmin(args),
   },
   admin: {
     useAsTitle: 'title',
+  },
+  hooks: {
+    afterChange: [revalidateSubCategory],
   },
   fields: [
     {

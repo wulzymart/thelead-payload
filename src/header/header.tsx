@@ -26,7 +26,7 @@ const Header = () => {
           <div className="flex flex-col gap-1">
             <p className="text-accent font-medium my-0">Follow us</p>
             <div className="flex gap-4">
-              {socials.map(({ Icon, name, url }, i) => (
+              {socials.map(({ Icon, url }, i) => (
                 <Link key={i} href={url}>
                   <Icon className="text-accent" />
                 </Link>

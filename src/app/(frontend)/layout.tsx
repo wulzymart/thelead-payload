@@ -8,7 +8,6 @@ import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
 import './globals.css'
@@ -23,8 +22,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/logo-small.png" rel="icon" sizes="32x32" />
+        <link href="/logo-small.png" rel="icon" type="image/svg+xml" />
+        <title>The Lead Nigeria</title>
       </head>
       <body>
         <Providers>
@@ -44,10 +44,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph(),
-  twitter: {
-    card: 'summary_large_image',
-    creator: '@payloadcms',
+  icons: {
+    icon: { url: "/logo-small.png" },
   },
-}
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    siteName: "The Lead Nigeria",
+    url: getServerSideURL(),
+  },
+  title: "The Lead Nigeria",
+  authors: {name: 'Olawole Olawale Martins'}
+};

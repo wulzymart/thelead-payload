@@ -7,6 +7,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
+import { Post } from '@/payload-types'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -24,7 +25,9 @@ export default async function Page() {
       slug: true,
       categories: true,
       meta: true,
+      featuredImage: true,
     },
+    sort: '-createdAt',
   })
 
   return (
@@ -32,7 +35,7 @@ export default async function Page() {
       <PageClient />
       <div className="container mb-16">
         <div className="prose dark:prose-invert max-w-none">
-          <h1>Posts</h1>
+          <h1>News</h1>
         </div>
       </div>
 
@@ -45,7 +48,7 @@ export default async function Page() {
         />
       </div>
 
-      <CollectionArchive posts={posts.docs} />
+      <CollectionArchive posts={posts.docs as Post[]} />
 
       <div className="container">
         {posts.totalPages > 1 && posts.page && (
@@ -58,6 +61,7 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    title: `Latest Nigerian News | The Lead Nigeria`,
+    description: `Stay updated with the latest news in the energy sector and other industries in Nigeria. Get insights, analysis, and updates on key events impacting various sectors.`,
   }
 }

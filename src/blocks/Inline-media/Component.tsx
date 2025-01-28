@@ -77,8 +77,6 @@ export const InlineMediaBlock: React.FC<InlineMediaBlockProps> = (props: InlineM
     gap,
     enableCaptions
   } = props
-  const gutter = false
-  console.log(gap)
 
   return (
   <div className={cn('container flex flex-wrap items',`gap-[${gap?.toString()}px]`, `justify-${alignment === 'left' ? 'start' : alignment === 'right' ? 'end' : 'center'}` )}>

@@ -1,4 +1,3 @@
-import PageTemplate, { generateMetadata } from './[slug]/page'
 import { Heading } from '@/heading/heading'
 import BreakingNews from '@/components/home-components/breaking-news'
 import Categories from '@/components/home-components/category/categories'
