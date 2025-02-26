@@ -49,6 +49,7 @@ export const Posts: CollectionConfig<'posts'> = {
     slug: true,
     category: true,
     subcategories: true,
+    featuredImage: true,
     meta: {
       image: true,
       description: true,
@@ -87,14 +88,14 @@ export const Posts: CollectionConfig<'posts'> = {
       },
       hasMany: false,
       relationTo: 'categories',
-      required: true
+      required: true,
     },
     {
       name: 'subcategories',
       type: 'relationship',
       admin: {
         position: 'sidebar',
-        condition: (data) => !!data.category
+        condition: (data) => !!data.category,
       },
       hasMany: true,
       relationTo: 'subcategories',
@@ -104,7 +105,7 @@ export const Posts: CollectionConfig<'posts'> = {
             equals: data.category,
           },
         }
-      }
+      },
     },
     {
       type: 'row',
@@ -138,6 +139,12 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'media',
             },
             {
+              name: 'enableCaption',
+              type: 'checkbox',
+              label: 'Enable caption',
+              defaultValue: true,
+            },
+            {
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({
@@ -145,9 +152,9 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock,
-                        InlineMediaBlock, VideoEmbedBlock
-                      ] }),
+                    BlocksFeature({
+                      blocks: [Banner, Code, MediaBlock, InlineMediaBlock, VideoEmbedBlock],
+                    }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -160,7 +167,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'excerpt',
               type: 'textarea',
-            }
+            },
           ],
           label: 'Content',
         },
@@ -183,7 +190,7 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'posts',
             },
           ],
-          label: 'Meta',
+          label: 'Related Posts',
         },
         {
           name: 'meta',
@@ -191,7 +198,7 @@ export const Posts: CollectionConfig<'posts'> = {
           fields: [
             OverviewField({
               titlePath: 'meta.title',
-              descriptionPath: 'metSerializedEditorStatea.description',
+              descriptionPath: 'meta.description',
               imagePath: 'meta.image',
             }),
             MetaTitleField({
@@ -242,7 +249,7 @@ export const Posts: CollectionConfig<'posts'> = {
       },
       hasMany: true,
       relationTo: 'users',
-      defaultValue: ({user}) =>([user!.id]),
+      defaultValue: ({ user }) => [user!.id],
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
@@ -274,7 +281,7 @@ export const Posts: CollectionConfig<'posts'> = {
     afterChange: [revalidatePost],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
-    beforeValidate:[checkHeadline]
+    beforeValidate: [checkHeadline],
   },
   versions: {
     drafts: {

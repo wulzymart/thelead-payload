@@ -3,10 +3,12 @@ import Link from "next/link";
 import { Category, Media, Post, Subcategory } from '@/payload-types'
 
 export default function NewsReadMoreCard({
-  news: { title, category, subcategories, slug, featuredImage: imgSrc, isExclusive },
+  news,
 }: {
   news: Post
 }) {
+  const { title, category, subcategories, slug, featuredImage: imgSrc, isExclusive } = news
+  console.log(news)
   return (
 
       <div className="w-full items-center h-fit">
@@ -16,7 +18,7 @@ export default function NewsReadMoreCard({
         >
           <Image
             className="w-full aspect-[4/3] object-contain"
-            src={(imgSrc as Media).thumbnailURL || "/dark-bg.jpg"}
+            src={(imgSrc as Media)?.thumbnailURL || "/dark-bg.jpg"}
             alt={(imgSrc as unknown as Media).alt || title}
             fill
             style={{ objectFit: "contain" }}

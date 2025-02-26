@@ -1,0 +1,15 @@
+.tabs-field__tabs {
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.collapsible__toggle-wrap{
+  display: flex;
+  gap: 20px;
+
+  .collapsible__toggle{
+    display: inline;
+    position: static;
+    max-width:  100px;
+  }
+
+}

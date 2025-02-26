@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import type { Media, Category, Subcategory ,Post, Config } from '@/payload-types'
+import type { Media, Category, Subcategory, Post, Config } from '@/payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
@@ -43,7 +43,7 @@ export const generateMeta = async (args: {
           ]
         : undefined,
       title,
-      url
+      url,
     }),
     title,
   }

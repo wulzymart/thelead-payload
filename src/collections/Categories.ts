@@ -11,7 +11,6 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { isAdmin } from '@/access/isAdmin'
-import { revalidatePath } from 'next/cache'
 import { revalidateCategory } from '@/hooks/revalidate'
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -34,10 +33,19 @@ export const Categories: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    {name: 'subcategories', type: 'join', collection: 'subcategories', on: 'category'},
-    {name: 'news', type: 'join', collection: 'posts', on: 'category'},
-    {name: 'parent', admin: {hidden: true}, type: 'relationship', relationTo: 'categories', hasMany: false, required: false},
-    {type: 'tabs', tabs: [
+    { name: 'subcategories', type: 'join', collection: 'subcategories', on: 'category' },
+    { name: 'news', type: 'join', collection: 'posts', on: 'category' },
+    {
+      name: 'parent',
+      admin: { hidden: true },
+      type: 'relationship',
+      relationTo: 'categories',
+      hasMany: false,
+      required: false,
+    },
+    {
+      type: 'tabs',
+      tabs: [
         {
           name: 'meta',
           label: 'SEO',
@@ -64,8 +72,9 @@ export const Categories: CollectionConfig = {
               descriptionPath: 'meta.description',
             }),
           ],
-        }
-      ]},
+        },
+      ],
+    },
     ...slugField(),
   ],
 }

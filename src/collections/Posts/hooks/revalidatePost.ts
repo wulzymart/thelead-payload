@@ -2,7 +2,7 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 
 import { revalidatePath, revalidateTag } from 'next/cache'
 
-import type { Category, Post} from '@/payload-types'
+import type { Category, Post } from '@/payload-types'
 
 export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   doc,
@@ -34,8 +34,8 @@ export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { 
 
   return doc
 }
-function revalidate(doc: Post){
-  revalidateTag('/')
+function revalidate(doc: Post) {
+  revalidatePath('/')
   const categorySlug = (doc?.category as Category).slug!
   revalidatePath(`/news/${categorySlug}`)
   revalidatePath(`/news`)

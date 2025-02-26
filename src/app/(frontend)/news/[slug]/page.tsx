@@ -13,6 +13,19 @@ import { LatestNews } from '@/heading/latest-news'
 import Subscribe from '@/components/cards/subscribe'
 import ShellAdvert from '@/components/cards/shell-advert'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { Category } from '@/payload-types'
+import { notFound } from 'next/navigation'
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from '@/components/react-share'
+import { getServerSideURL } from '@/utilities/getURL'
+import { FacebookIcon, TelegramIcon, TwitterIcon, WhatsappIcon } from 'react-share'
+import { Subcategory } from '@/namespaces/models/category'
+import { LinkedinIcon } from 'lucide-react'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -38,11 +51,38 @@ type Args = {
   }>
 }
 
-export default async function Post({ params: paramsPromise }: Args) {
+export default async function PostPage({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
-  const url = '/posts/' + slug
+  const url = '/news/' + slug
+  const shareURL = getServerSideURL() + url
+  console.log(shareURL)
+
   const news = await queryPostBySlug({ slug })
+  if (!news) throw notFound()
+  const payload = await getPayload({ config: configPromise })
+  const { docs: relatedPosts } = await payload.find({
+    collection: 'posts',
+    limit: 6,
+    where: {
+      _status: {
+        equals: 'published',
+      },
+      slug: {
+        not_equals: slug,
+      },
+      'category.slug': {
+        equals: (news.category as Category).slug,
+      },
+    },
+    overrideAccess: false,
+    pagination: false,
+    select: {
+      title: true,
+      slug: true,
+      featuredImage: true,
+    },
+  })
 
   if (!news) return <PayloadRedirects url={url} />
   return (
@@ -64,18 +104,45 @@ export default async function Post({ params: paramsPromise }: Args) {
                 position: 'relative',
               }}
             >
-              <MediaBlock media={news.featuredImage} blockType="mediaBlock" />
+              <MediaBlock
+                media={news.featuredImage}
+                enableCaption={news.enableCaption!}
+                blockType="mediaBlock"
+              />
             </div>
           ) : (
             ''
           )}
           <section id="content" className="mt-6">
+            <div className="mx-auto flex justify-end my-4 gap-4 w-[95%]">
+              <TwitterShareButton url={shareURL} title={news.title}>
+                <TwitterIcon size={20} />
+              </TwitterShareButton>
+              <FacebookShareButton url={shareURL} title={news.title} hashtag={`#${news.category}`}>
+                <FacebookIcon size={20} />
+              </FacebookShareButton>
+              <LinkedinShareButton url={shareURL} title={news.title}>
+                <LinkedinIcon className="bg-blue-300 p-0.5" size={20} />
+              </LinkedinShareButton>
+              <WhatsappShareButton url={shareURL} title={news.title} separator="\n">
+                <WhatsappIcon size={20} />
+              </WhatsappShareButton>
+              <TelegramShareButton url={shareURL} title={news.title}>
+                <TelegramIcon size={20} />
+              </TelegramShareButton>
+            </div>
             <RichText className="w-full text-lg" data={news.content} enableGutter={false} />
-            {news.relatedPosts && news.relatedPosts.length > 0 && (
-              <RelatedPosts
-                className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-                docs={news.relatedPosts.filter((news) => typeof news === 'object')}
-              />
+            {((news.relatedPosts && news.relatedPosts.length > 0) || relatedPosts.length > 0) && (
+              <div className="mt-8">
+                <h4 className="text-lg font-medium">Related News</h4>
+                <RelatedPosts
+                  className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
+                  docs={
+                    news.relatedPosts?.filter((news) => typeof news === 'object') ||
+                    (relatedPosts as any)
+                  }
+                />
+              </div>
             )}
           </section>
         </article>

@@ -36,26 +36,27 @@ export const SingleMediaBlock: React.FC<Props> = (props) => {
   let caption
   if (media && typeof media === 'object') caption = media.caption
 const style = {} as any
- if (height )style.height = height
-  if (width )style.width = width
+ if (height) style.height = height
+  if (width) style.width = width
   return (
     <div
-      style={style}
       className={cn(
-        '',
         {
           container: enableGutter,
         },
         className,
       )}
     >
-      <Media
-        imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
-        resource={media}
-        src={staticImage}
-      />
+        <Media
+          height={height ? height : undefined}
+          width={width ? width : undefined}
+          imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
+          resource={media}
+          src={staticImage}
+        />
       {caption && (
         <div
+          style={{width: width ? width : undefined}}
           className={cn(
             'mt-6',
             {
@@ -77,9 +78,8 @@ export const InlineMediaBlock: React.FC<InlineMediaBlockProps> = (props: InlineM
     gap,
     enableCaptions
   } = props
-
   return (
-  <div className={cn('container flex flex-wrap items',`gap-[${gap?.toString()}px]`, `justify-${alignment === 'left' ? 'start' : alignment === 'right' ? 'end' : 'center'}` )}>
+  <div className={cn('container flex flex-wrap items',gap ? `gap-[${gap}px]` : `gap-[20px]`, `justify-${alignment === 'left' ? 'start' : alignment === 'right' ? 'end' : 'center'}` )}>
     {media.map((item, i) => {
       return <SingleMediaBlock key={i} {...item } captionClassName={cn(`${!enableCaptions? 'hidden': "max-w-[48rem]"}`, `justify-${alignment === 'left' ? 'start' : alignment === 'right' ? 'end' : 'center'}`)}
                                enableGutter={false}

@@ -16,6 +16,7 @@ type Props = MediaBlockProps & {
   imgClassName?: string
   staticImage?: StaticImageData
   disableInnerContainer?: boolean
+  enableCaption?: boolean
 }
 
 export const MediaBlock: React.FC<Props> = (props) => {
@@ -27,6 +28,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
     media,
     staticImage,
     disableInnerContainer,
+    enableCaption = true,
   } = props
 
   let caption
@@ -49,7 +51,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
           src={staticImage}
         />
       )}
-      {caption && (
+      {caption && enableCaption &&(
         <div
           className={cn(
             'mt-6',

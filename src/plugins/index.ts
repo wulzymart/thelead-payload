@@ -15,7 +15,7 @@ import { Category, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const generateTitle: GenerateTitle<Post | Category> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | The Lead Nigeria` : 'The Lead Nigeria'
 }
 
 const generateURL: GenerateURL<Post | Category> = ({ doc }) => {

@@ -18,11 +18,13 @@ export const InlineMediaBlock: Block = {
           name: 'height',
           type: 'number',
           label: 'Height(px)',
+          defaultValue: 200
         },
         {
           name: 'width',
           type: 'number',
           label: 'Width(px)',
+          defaultValue: 200
         },
       ],
       required: true
