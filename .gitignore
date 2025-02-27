@@ -1,6 +1,7 @@
 build
 dist / media
 node_modules
+node_modules_bk
 .DS_Store
 .env
 .next
