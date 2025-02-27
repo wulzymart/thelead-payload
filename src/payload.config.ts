@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { s3Storage } from '@payloadcms/storage-s3'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -23,19 +24,18 @@ export default buildConfig({
     meta: {
       title: 'Admin area | The Lead Nigeria',
       description: 'Admin area for The Lead Nigeria',
-      icons:[
+      icons: [
         {
           rel: 'icon',
           type: 'image/png',
           url: '/logo-small.png',
         },
-      ]
-
+      ],
     },
     components: {
-      graphics:{
+      graphics: {
         Logo: '@/components/logo#Logo',
-        Icon: '@/components/logo#Icon'
+        Icon: '@/components/logo#Icon',
       },
     },
     importMap: {
@@ -74,6 +74,19 @@ export default buildConfig({
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
     ...plugins,
+    s3Storage({
+      collections: {
+        media: true,
+      },
+      bucket: process.env.S3_BUCKET_NAME!,
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY!,
+          secretAccessKey: process.env.S3_SECRET_KEY!,
+        },
+        region: process.env.S3_REGION,
+      },
+    }),
     // storage-adapter-placeholder
   ],
   secret: process.env.PAYLOAD_SECRET,
