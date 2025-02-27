@@ -33,5 +33,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/app-name:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/app-name:${{ github.sha }}
+          build-args: |
+            PAYLOAD_SECRET=5958f8sdg89438rg3rg9dfb
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/app-name:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/app-name:buildcache,mode=max
