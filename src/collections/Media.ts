@@ -5,15 +5,9 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
-import { headers } from 'next/headers'
-
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -43,6 +37,7 @@ export const Media: CollectionConfig = {
     adminThumbnail: 'thumbnail',
     externalFileHeaderFilter: (headers) => {
       console.log('headers: ', headers)
+      headers['Connection'] = 'keep-alive'
       return headers
     },
     focalPoint: true,
