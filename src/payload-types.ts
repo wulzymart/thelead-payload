@@ -204,13 +204,15 @@ export interface Category {
   id: string;
   title: string;
   subcategories?: {
-    docs?: (string | Subcategory)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
+    docs?: (string | Subcategory)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   news?: {
-    docs?: (string | Post)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
+    docs?: (string | Post)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   parent?: (string | null) | Category;
   meta?: {
     title?: string | null;
@@ -242,9 +244,10 @@ export interface Subcategory {
   title: string;
   category: string | Category;
   news?: {
-    docs?: (string | Post)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
+    docs?: (string | Post)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   meta?: {
     title?: string | null;
     /**
