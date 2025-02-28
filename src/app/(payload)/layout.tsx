@@ -8,7 +8,6 @@ import React from 'react'
 
 import { importMap } from './admin/importMap.js'
 import './custom.scss'
-import { Metadata } from 'next'
 
 type Args = {
   children: React.ReactNode
@@ -30,5 +29,3 @@ const Layout = ({ children }: Args) => (
 )
 
 export default Layout
-
-

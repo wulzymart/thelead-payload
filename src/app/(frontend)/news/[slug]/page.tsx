@@ -24,7 +24,6 @@ import {
 } from '@/components/react-share'
 import { getServerSideURL } from '@/utilities/getURL'
 import { FacebookIcon, TelegramIcon, TwitterIcon, WhatsappIcon } from 'react-share'
-import { Subcategory } from '@/namespaces/models/category'
 import { LinkedinIcon } from 'lucide-react'
 
 export async function generateStaticParams() {

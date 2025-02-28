@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import React, { useEffect, useState } from 'react'
-
 
 import {
   DropdownMenu,
@@ -12,15 +12,14 @@ import { $patchStyleText } from '@payloadcms/richtext-lexical/lexical/selection'
 import { $getSelection, $isRangeSelection } from '@payloadcms/richtext-lexical/lexical'
 import { useLexicalComposerContext } from '@payloadcms/richtext-lexical/lexical/react/LexicalComposerContext'
 import { ColorPicker } from '@/lexical-features/colour/client/components/colour-picker'
-import {  FontColorIcon } from '@/lexical-features/colour/client/icons/colour-icon'
+import { FontColorIcon } from '@/lexical-features/colour/client/icons/colour-icon'
 import { translateColor } from '@/lexical-features/colour/utils/translateColor'
 import { PaintBucketIcon } from 'lucide-react'
 
 // create the target type
 type ColorType = 'font' | 'background'
 
-
-export const DropdownColorPicker = ({colorType}: {colorType: ColorType}) => {
+export const DropdownColorPicker = ({ colorType }: { colorType: ColorType }) => {
   const [colour, setColour] = useState<string | undefined>('')
   const [editor] = useLexicalComposerContext()
 
@@ -71,9 +70,8 @@ export const DropdownColorPicker = ({colorType}: {colorType: ColorType}) => {
         $patchStyleText(selection, style)
       }
     })
-
   }
-  const [open, setOpen]  = useState(false)
+  const [open, setOpen] = useState(false)
 
   const onModalClose = () => {
     if (colour) {
@@ -111,13 +109,17 @@ export const DropdownColorPicker = ({colorType}: {colorType: ColorType}) => {
   return (
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger className="">
-        {colorType === 'font' ? <FontColorIcon underscoreColor={colour} />: <PaintBucketIcon style={{backgroundColor: colour}}/> }
+        {colorType === 'font' ? (
+          <FontColorIcon underscoreColor={colour} />
+        ) : (
+          <PaintBucketIcon style={{ backgroundColor: colour }} />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <ColorPicker
-          onApplyStyles={() =>{
+          onApplyStyles={() => {
             onModalClose()
-           setOpen(false)
+            setOpen(false)
           }}
           fontColor={colour}
           onColorChange={handleColorChange}

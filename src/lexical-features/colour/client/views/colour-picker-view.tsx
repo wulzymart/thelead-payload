@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import { Label } from '@/components/ui/label'
 import React, { useEffect } from 'react'
@@ -7,7 +8,6 @@ import { Button } from '@payloadcms/ui'
 import { HslColor, RgbColor } from 'react-colorful'
 import { transformKeys } from '../../utils/transformKeys'
 import { Input } from '@/components/ui/custom-input'
-
 
 interface Props {
   onFontColorChange: (color: string) => void
