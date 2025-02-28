@@ -1,13 +1,6 @@
 # To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.js file.
 # From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
-ARG PAYLOAD_SECRET
-ARG CRON_SECRET
-ARG DATABASE_URI
-ARG S3_BUCKET_NAME
-ARG S3_ACCESS_KEY
-ARG S3_SECRET_KEY
-ARG S3_ENDPOINT
-ARG S3_REGION
+
 
 FROM node:22.12.0-alpine AS base
 
@@ -40,7 +33,14 @@ COPY . .
 
 # Or use a PG connection string
 #DATABASE_URI=postgresql://127.0.0.1:5432/your-database-name
-
+ARG PAYLOAD_SECRET
+ARG CRON_SECRET
+ARG DATABASE_URI
+ARG S3_BUCKET_NAME
+ARG S3_ACCESS_KEY
+ARG S3_SECRET_KEY
+ARG S3_ENDPOINT
+ARG S3_REGION
 # Used to encrypt JWT tokens
 ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
 ENV CRON_SECRET=$CRON_SECRET
@@ -51,7 +51,6 @@ ENV S3_SECRET_KEY=$S3_SECRET_KEY
 ENV S3_REGION=$S3_REGION
 ENV S3_ENDPOINT=$S3_ENDPOINT
 
-RUN echo test
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
@@ -62,6 +61,14 @@ RUN \
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
+ARG PAYLOAD_SECRET
+ARG CRON_SECRET
+ARG DATABASE_URI
+ARG S3_BUCKET_NAME
+ARG S3_ACCESS_KEY
+ARG S3_SECRET_KEY
+ARG S3_ENDPOINT
+ARG S3_REGION
 
 ENV NODE_ENV=production
 ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
