@@ -31,8 +31,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/app-name:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/app-name:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/theleadng:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/theleadng:${{ github.sha }}
           build-args: |
             PAYLOAD_SECRET=${{secrets.PAYLOAD_SECRET}}
             DATABASE_URI=${{secrets.DATABASE_URI}}
