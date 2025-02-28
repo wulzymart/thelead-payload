@@ -41,5 +41,3 @@ jobs:
             S3_ACCESS_KEY=${{secrets.S3_ACCESS_KEY}}
             S3_SECRET_KEY=${{secrets.S3_SECRET_KEY}}
             S3_ENDPOINT=${{secrets.S3_ENDPOINT}}
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/app-name:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/app-name:buildcache,mode=max
