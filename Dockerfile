@@ -51,6 +51,8 @@ ENV S3_SECRET_KEY=$S3_SECRET_KEY
 ENV S3_REGION=$S3_REGION
 ENV S3_ENDPOINT=$S3_ENDPOINT
 
+RUN echo ${PAYLOAD_SECRET}
+RUN echo ${DATABASE_URI}
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
