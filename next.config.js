@@ -20,7 +20,6 @@ const nextConfig = {
       }),
     ],
   },
-  output: 'standalone',
   reactStrictMode: true,
   redirects,
 }
