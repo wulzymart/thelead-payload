@@ -1,24 +1,25 @@
-import { SocialLink } from "@/namespaces/socials";
-import { FaFacebookF } from "react-icons/fa6";
-import { FaXTwitter } from "react-icons/fa6";
-import Link from "next/link";
-import Image from "next/image";
-import NewsSearch from "./search/search-button";
-import { NavMenu } from "./nav-bar/nav-menu";
+import { SocialLink } from '@/namespaces/socials'
+import { FaFacebookF } from 'react-icons/fa6'
+import { FaXTwitter } from 'react-icons/fa6'
+import Link from 'next/link'
+import Image from 'next/image'
+import NewsSearch from './search/search-button'
+import { NavMenu } from './nav-bar/nav-menu'
+import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 
 const Header = () => {
   const socials: SocialLink[] = [
     {
-      name: "x",
+      name: 'x',
       Icon: FaXTwitter,
-      url: "https://x.com",
+      url: 'https://x.com',
     },
     {
-      name: "facebook",
+      name: 'facebook',
       Icon: FaFacebookF,
-      url: "https://facebook.com",
+      url: 'https://facebook.com',
     },
-  ];
+  ]
   return (
     <header className="w-full flex flex-col gay-4">
       <div className="w-[90%] m-auto py-6">
@@ -32,16 +33,11 @@ const Header = () => {
                 </Link>
               ))}
             </div>
+            <ThemeSelector />
           </div>
           <div>
             <Link href="/">
-              <Image
-                src="/logo-small.png"
-                alt="the lead logo"
-                width="180"
-                height="114"
-                priority
-              />
+              <Image src="/logo-small.png" alt="the lead logo" width="180" height="114" priority />
             </Link>
           </div>
           <NewsSearch />
@@ -49,7 +45,7 @@ const Header = () => {
       </div>
       <NavMenu />
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

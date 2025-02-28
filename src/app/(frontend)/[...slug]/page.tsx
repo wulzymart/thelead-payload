@@ -14,9 +14,11 @@ import { Heading } from '@/heading/heading'
 import NewsThumbnailTitleExcerptCard from '@/components/cards/thumdnail-title-card'
 import {
   Pagination,
-  PaginationContent, PaginationEllipsis,
+  PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
-  PaginationLink, PaginationNext,
+  PaginationLink,
+  PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
 import Subscribe from '@/components/cards/subscribe'
@@ -29,10 +31,10 @@ type Args = {
   searchParams: Promise<{ page?: string }>
 }
 
-export default async function Page({ params: paramsPromise , searchParams: searchPromise}: Args, ) {
+export default async function Page({ params: paramsPromise, searchParams: searchPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { slug } = await paramsPromise
-  const {page: currentPage} = await searchPromise
+  const { page: currentPage } = await searchPromise
 
   if (slug.length > 2) {
     throw notFound()
@@ -43,7 +45,9 @@ export default async function Page({ params: paramsPromise , searchParams: searc
   const category: Category | null = await queryCategoryBySlug({ slug: categorySlug! })
   if (!category) throw notFound()
 
-  const subcategory: Subcategory | null = subcategorySlug? await querySubCategoryBySlug({ slug: subcategorySlug! }) : null
+  const subcategory: Subcategory | null = subcategorySlug
+    ? await querySubCategoryBySlug({ slug: subcategorySlug! })
+    : null
 
   if (subcategorySlug && !subcategory) throw notFound()
 
@@ -61,13 +65,11 @@ export default async function Page({ params: paramsPromise , searchParams: searc
       equals: categorySlug,
     }
   }
-  const pageUrl = `/${categorySlug}${
-    subcategorySlug ? `/${subcategorySlug}` : ""
-  }`;
+  const pageUrl = `/${categorySlug}${subcategorySlug ? `/${subcategorySlug}` : ''}`
   const {
     docs: posts,
     totalPages,
-    page
+    page,
   } = await payload.find({
     collection: 'posts',
     overrideAccess: false,
@@ -78,8 +80,6 @@ export default async function Page({ params: paramsPromise , searchParams: searc
   return (
     <main>
       <PageClient />
-      {/* Allows redirects for valid pages too */}
-
       {draft && <LivePreviewListener />}
 
       <div className="flex gap-10 text-white font-serif w-[90%] mx-auto my-10 bg-black">
@@ -111,7 +111,7 @@ export default async function Page({ params: paramsPromise , searchParams: searc
             ))}
           </section>
           <div className="mt-10">
-            {page &&
+            {page && (
               <Pagination>
                 <PaginationContent>
                   {page && page > 1 && (
@@ -167,7 +167,7 @@ export default async function Page({ params: paramsPromise , searchParams: searc
                   )}
                 </PaginationContent>
               </Pagination>
-            }
+            )}
           </div>
         </div>
         <aside className="col-span-1 flex flex-col gap-8">
@@ -179,7 +179,6 @@ export default async function Page({ params: paramsPromise , searchParams: searc
   )
 }
 
-
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug } = await paramsPromise
   if (slug.length > 2) {
@@ -190,16 +189,18 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const category: Category | null = await queryCategoryBySlug({ slug: categorySlug! })
   if (!category) throw notFound()
 
-  const subcategory: Subcategory | null = subcategorySlug? await querySubCategoryBySlug({ slug: subcategorySlug! }) : null
+  const subcategory: Subcategory | null = subcategorySlug
+    ? await querySubCategoryBySlug({ slug: subcategorySlug! })
+    : null
 
   if (subcategorySlug && !subcategory) throw notFound()
-const url = `/${categorySlug}${subcategorySlug ? `/${subcategorySlug}` : ""}`
+  const url = `/${categorySlug}${subcategorySlug ? `/${subcategorySlug}` : ''}`
   return generateMeta({ doc: subcategory || category, url })
 }
 
 const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
   const payload = await getPayload({ config: configPromise })
-  const {docs, totalDocs} = await payload.find({
+  const { docs, totalDocs } = await payload.find({
     collection: 'categories',
     where: {
       slug: {
@@ -210,14 +211,14 @@ const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
       title: true,
       slug: true,
       subcategories: true,
-      meta: true
+      meta: true,
     },
   })
-  return totalDocs ? docs[0] as Category: null
+  return totalDocs ? (docs[0] as Category) : null
 })
 const querySubCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
   const payload = await getPayload({ config: configPromise })
-  const {docs, totalDocs} =  await payload.find({
+  const { docs, totalDocs } = await payload.find({
     collection: 'subcategories',
     where: {
       slug: {
@@ -227,8 +228,8 @@ const querySubCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
     select: {
       title: true,
       slug: true,
-      meta: true
+      meta: true,
     },
   })
-  return totalDocs ? docs[0] as Subcategory: null
+  return totalDocs ? (docs[0] as Subcategory) : null
 })

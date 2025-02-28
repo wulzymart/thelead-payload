@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
-import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
@@ -82,8 +81,15 @@ export default async function PostPage({ params: paramsPromise }: Args) {
       featuredImage: true,
     },
   })
-
-  if (!news) return <PayloadRedirects url={url} />
+  const tag = (news.category as unknown as Category).slug!
+  const generateHashtags = () => {
+    const tags: string[] = [tag]
+    news.subcategories?.map((sub) => {
+      if (typeof sub === 'string') return
+      tags.push(sub.slug!)
+    })
+    return tags
+  }
   return (
     <div className="w-[90%] mx-auto mt-8 grid grid-col-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
       <main className="md:col-span-2 lg:col-span-3">
@@ -114,10 +120,10 @@ export default async function PostPage({ params: paramsPromise }: Args) {
           )}
           <section id="content" className="mt-6">
             <div className="mx-auto flex justify-end my-4 gap-4 w-[95%]">
-              <TwitterShareButton url={shareURL} title={news.title}>
+              <TwitterShareButton url={shareURL} title={news.title} hashtags={generateHashtags()}>
                 <TwitterIcon size={20} />
               </TwitterShareButton>
-              <FacebookShareButton url={shareURL} title={news.title} hashtag={`#${news.category}`}>
+              <FacebookShareButton url={shareURL} title={news.title} hashtag={tag}>
                 <FacebookIcon size={20} />
               </FacebookShareButton>
               <LinkedinShareButton url={shareURL} title={news.title}>
