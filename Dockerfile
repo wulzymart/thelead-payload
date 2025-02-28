@@ -50,6 +50,7 @@ ENV S3_BUCKET_NAME=$S3_BUCKET_NAME
 ENV S3_SECRET_KEY=$S3_SECRET_KEY
 ENV S3_REGION=$S3_REGION
 ENV S3_ENDPOINT=$S3_ENDPOINT
+ENV NEXT_PUBLIC_SERVER_URL=https://theleadng.com
 
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
@@ -79,6 +80,7 @@ ENV S3_BUCKET_NAME=$S3_BUCKET_NAME
 ENV S3_SECRET_KEY=$S3_SECRET_KEY
 ENV S3_REGION=$S3_REGION
 ENV S3_ENDPOINT=$S3_ENDPOINT
+ENV NEXT_PUBLIC_SERVER_URL=https://theleadng.com
 
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
