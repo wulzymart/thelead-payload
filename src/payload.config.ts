@@ -86,6 +86,7 @@ export default buildConfig({
         },
         endpoint: process.env.S3_ENDPOINT,
         region: process.env.S3_REGION,
+        forcePathStyle: true,
       },
     }),
     // storage-adapter-placeholder
