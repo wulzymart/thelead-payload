@@ -1,8 +1,14 @@
 # To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.js file.
 # From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 ARG PAYLOAD_SECRET
-# ARG CRON_SECRET
-# ARG DATABASE_URI
+ARG CRON_SECRET
+ARG DATABASE_URI
+ARG S3_BUCKET_NAME
+ARG S3_ACCESS_KEY
+ARG S3_SECRET_KEY
+ARG S3_ENDPOINT
+ARG S3_REGION
+
 FROM node:22.12.0-alpine AS base
 
 # Install dependencies only when needed
@@ -37,6 +43,13 @@ COPY . .
 
 # Used to encrypt JWT tokens
 ENV PAYLOAD_SECRET=${PAYLOAD_SECRET}
+ENV CRON_SECRET=${CRON_SECRET}
+ENV DATABASE_URI=${DATABASE_URI}
+ENV S3_ACCESS_KEY=${S3_ACCESS_KEY}
+ENV S3_BUCKET_NAME=${S3_BUCKET_NAME}
+ENV S3_SECRET_KEY=${S3_SECRET_KEY}
+ENV S3_REGION=${S3_REGION}
+ENV S3_ENDPOINT=${S3_ENDPOINT}
 
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
@@ -50,6 +63,15 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV PAYLOAD_SECRET=${PAYLOAD_SECRET}
+ENV CRON_SECRET=${CRON_SECRET}
+ENV DATABASE_URI=${DATABASE_URI}
+ENV S3_ACCESS_KEY=${S3_ACCESS_KEY}
+ENV S3_BUCKET_NAME=${S3_BUCKET_NAME}
+ENV S3_SECRET_KEY=${S3_SECRET_KEY}
+ENV S3_REGION=${S3_REGION}
+ENV S3_ENDPOINT=${S3_ENDPOINT}
+
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
