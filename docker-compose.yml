@@ -5,9 +5,6 @@ services:
     image: node:18-alpine
     ports:
       - '3000:3000'
-    volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
     working_dir: /home/node/app/
     command: sh -c "yarn install && yarn build && yarn start"
     # depends_on:
