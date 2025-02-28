@@ -51,15 +51,13 @@ ENV S3_SECRET_KEY=$S3_SECRET_KEY
 ENV S3_REGION=$S3_REGION
 ENV S3_ENDPOINT=$S3_ENDPOINT
 
-RUN echo ${PAYLOAD_SECRET}
-RUN echo ${DATABASE_URI}
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
   else echo "Lockfile not found." && exit 1; \
   fi
-
+RUN ls /app/.next
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
@@ -94,6 +92,7 @@ COPY --from=builder /app/public ./public
 # Set the correct permission for prerender cache
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
+
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
