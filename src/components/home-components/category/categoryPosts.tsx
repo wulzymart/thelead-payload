@@ -30,6 +30,7 @@ export default async function CategoryPosts({ category, subcategory }: { categor
     where,
     sort: '-createdAt'
   })
+  
   return (
       <div className="mt-8 md:mt-20 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {news?.map((post) => (

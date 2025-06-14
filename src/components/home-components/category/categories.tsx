@@ -14,6 +14,7 @@ export default async function Categories() {
       slug: true,
       subcategories: true,
     },
+    limit:0
   })
 
   const getPostsCount = async (categorySlug: string) => {
