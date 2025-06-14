@@ -14,7 +14,6 @@ export async function LatestNews({
     limit: 6,
     overrideAccess: false,
   })).docs as Post[]
-  console.log(news)
   return (
     <div className="space-y-4 w-full">
           <h2>Latest News</h2>

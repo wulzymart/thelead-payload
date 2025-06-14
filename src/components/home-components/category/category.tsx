@@ -25,10 +25,8 @@ const CategoryComponent =async ({
     .subcategories
     ?.docs
     ?.filter(async (subcategory) => {
-      console.log('filter')
       if ((subcategory as Subcategory).slug) return false
       const { totalDocs } = await getPostsCount((subcategory as Subcategory).slug!)
-      console.log('total',totalDocs)
       return totalDocs > 0
     }) as Subcategory[]
 

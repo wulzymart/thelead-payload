@@ -10,7 +10,6 @@ export default function NewsThumbnailTitleExcerptCard({
   news: Post
   className?: string
 }) {
-  console.log(imgSrc)
   return (
     <div className={`py-6 ${className}`}>
       <Link href={`/news/${slug}`}>

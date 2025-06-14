@@ -54,8 +54,6 @@ export default async function PostPage({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
   const url = '/news/' + slug
   const shareURL = getServerSideURL() + url
-  console.log(shareURL)
-
   const news = await queryPostBySlug({ slug })
   if (!news) throw notFound()
   const payload = await getPayload({ config: configPromise })

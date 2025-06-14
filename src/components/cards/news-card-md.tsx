@@ -8,7 +8,6 @@ export default function NewsReadMoreCard({
   news: Post
 }) {
   const { title, category, subcategories, slug, featuredImage: imgSrc, isExclusive } = news
-  console.log(news)
   return (
 
       <div className="w-full items-center h-fit">

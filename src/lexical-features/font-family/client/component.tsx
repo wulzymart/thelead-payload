@@ -19,7 +19,6 @@ export function FontFamilyDropDown(): JSX.Element {
       editor.update(() => {
         const selection = $getSelection();
         if (selection !== null) {
-          console.log(selection, option)
           $patchStyleText(selection, {
             'font-family': option,
           });
