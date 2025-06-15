@@ -11,6 +11,7 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   let url = serverUrl + '/logo.png'
 
   if (image && typeof image === 'object' && 'url' in image) {
+    // edited after removing image size variants
     const ogUrl = image.url
 
     url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
