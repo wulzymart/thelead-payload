@@ -24,7 +24,6 @@ import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloa
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { Icon as Icon_7a89b5675912f3f4f82dd41bbb03d52e } from '@/components/logo'
 import { Logo as Logo_7a89b5675912f3f4f82dd41bbb03d52e } from '@/components/logo'
-import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -52,6 +51,5 @@ export const importMap = {
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/components/logo#Icon": Icon_7a89b5675912f3f4f82dd41bbb03d52e,
-  "@/components/logo#Logo": Logo_7a89b5675912f3f4f82dd41bbb03d52e,
-  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
+  "@/components/logo#Logo": Logo_7a89b5675912f3f4f82dd41bbb03d52e
 }

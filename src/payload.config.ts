@@ -1,6 +1,6 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { s3Storage } from '@payloadcms/storage-s3'
+// import { s3Storage } from '@payloadcms/storage-s3'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -72,26 +72,26 @@ export default buildConfig({
   }),
   collections: [Posts, Media, Categories, Users, Subcategories],
   upload: {
-    debug: true
+    debug: true,
   },
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
     ...plugins,
-    s3Storage({
-      collections: {
-        media: true,
-      },
-      bucket: process.env.S3_BUCKET_NAME!,
-      config: {
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY!,
-          secretAccessKey: process.env.S3_SECRET_KEY!,
-        },
-        endpoint: process.env.S3_ENDPOINT,
-        region: process.env.S3_REGION,
-        forcePathStyle: true,
-      },
-    }),
+    // s3Storage({
+    //   collections: {
+    //     media: true,
+    //   },
+    //   bucket: process.env.S3_BUCKET_NAME!,
+    //   config: {
+    //     credentials: {
+    //       accessKeyId: process.env.S3_ACCESS_KEY!,
+    //       secretAccessKey: process.env.S3_SECRET_KEY!,
+    //     },
+    //     endpoint: process.env.S3_ENDPOINT,
+    //     region: process.env.S3_REGION,
+    //     forcePathStyle: true,
+    //   },
+    // }),
     // storage-adapter-placeholder
   ],
   secret: process.env.PAYLOAD_SECRET,
