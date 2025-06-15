@@ -71,6 +71,9 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   collections: [Posts, Media, Categories, Users, Subcategories],
+  upload: {
+    debug: true
+  },
   cors: [getServerSideURL()].filter(Boolean),
   plugins: [
     ...plugins,
