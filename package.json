@@ -39,6 +39,7 @@
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
+    "@sentry/nextjs": "^9.29.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "colortranslator": "^4.1.0",
