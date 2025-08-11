@@ -21,7 +21,7 @@ export default function NewsThumbnailTitleExcerptCategoriesCard({
       <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-white">
         <div className="w-full md:w-1/3 bg-white grid place-items-center">
           <Image
-            src={(imgSrc as Media).thumbnailURL!}
+            src={(imgSrc as Media).url!}
             alt={(imgSrc as unknown as Media).alt || title}
             className="rounded-xl"
             fill

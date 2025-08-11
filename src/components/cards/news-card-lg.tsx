@@ -23,7 +23,7 @@ export default function PostCardBig({
           className="bg-gray-900"
         >
           <Image
-            src={(imgSrc as Media).thumbnailURL || "/dark-bg.jpg"}
+            src={(imgSrc as Media).url || "/dark-bg.jpg"}
             alt={(imgSrc as unknown as Media).alt || title}
             fill
             style={{ objectFit: "contain" }}

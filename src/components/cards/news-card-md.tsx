@@ -17,7 +17,7 @@ export default function NewsReadMoreCard({
         >
           <Image
             className="w-full aspect-[4/3] object-contain"
-            src={(imgSrc as Media)?.thumbnailURL || "/dark-bg.jpg"}
+            src={(imgSrc as Media)?.url || "/dark-bg.jpg"}
             alt={(imgSrc as unknown as Media).alt || title}
             fill
             style={{ objectFit: "contain" }}
