@@ -11,7 +11,7 @@ export default function FeedText({
   return (
     <div className="w-full grid grid-cols-5 md:grid-cols-1 gap-2 items-center">
       <div className="md:hidden col-span-1 aspect-[4/3] md:w-1/3 bg-white grid place-items-center relative">
-        <Image src={(imgSrc as unknown as Media).thumbnailURL as string}  alt={(imgSrc as unknown as Media).alt || title} className="rounded" fill />
+        <Image src={(imgSrc as unknown as Media).url as string}  alt={(imgSrc as unknown as Media).alt || title} className="rounded" fill />
       </div>
       <div className="w-full col-span-4 md:col-span-1">
         <Link href={`/news/${slug}`}>

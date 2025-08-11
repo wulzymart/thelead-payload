@@ -19,9 +19,9 @@ export const ThemeSelector: React.FC = () => {
   const [value, setValue] = useState('')
 
   const onThemeChange = (themeToSet: Theme & 'auto') => {
-    if (themeToSet === 'auto') {
-      setTheme(null)
-      setValue('auto')
+    if (themeToSet === 'light') {
+      setTheme('light')
+      setValue('light')
     } else {
       setTheme(themeToSet)
       setValue(themeToSet)
@@ -30,7 +30,7 @@ export const ThemeSelector: React.FC = () => {
 
   React.useEffect(() => {
     const preference = window.localStorage.getItem(themeLocalStorageKey)
-    setValue(preference ?? 'auto')
+    setValue(preference ?? 'light')
   }, [])
 
   return (
