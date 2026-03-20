@@ -4,13 +4,7 @@ import { getPayload, type PayloadRequest } from 'payload'
 import configPromise from '@payload-config'
 import { CollectionSlug } from 'payload'
 export async function GET(
-  req: Request & {
-    cookies: {
-      get: (name: string) => {
-        value: string
-      }
-    }
-  },
+  req: Request,
 ): Promise<Response> {
   const payload = await getPayload({ config: configPromise })
   const { searchParams } = new URL(req.url)
