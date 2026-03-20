@@ -18,6 +18,7 @@ import { Subcategories } from '@/collections/Subcategories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const isBuild = process.env.NEXT_PHASE === 'phase-production-build'
 
 export default buildConfig({
   admin: {
@@ -68,7 +69,7 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: isBuild ? process.env.BUILD_DATABASE_URI || '' : process.env.DATABASE_URI || '',
   }),
   collections: [Posts, Media, Categories, Users, Subcategories],
   upload: {
